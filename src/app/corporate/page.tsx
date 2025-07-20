@@ -11,7 +11,7 @@ export default function Corporate() {
         title="Sustainable Corporate Gifts That Make a Difference"
       >
         Elevate your corporate gifting with handcrafted, eco-friendly products that reflect your 
-        company's commitment to sustainability and social responsibility. Every gift supports rural 
+        company&apos;s commitment to sustainability and social responsibility. Every gift supports rural 
         artisans and demonstrates your values to clients, partners, and employees.
       </SectionTitle>
 
@@ -344,7 +344,7 @@ export default function Corporate() {
         preTitle="Custom Solutions"
         title="Tailored Corporate Gift Programs"
       >
-        Let us create a sustainable gifting program that reflects your company's values and makes a positive impact. 
+        Let us create a sustainable gifting program that reflects your company&apos;s values and makes a positive impact. 
         From employee appreciation to client gifts, we customize every aspect to your needs.
       </SectionTitle>
 

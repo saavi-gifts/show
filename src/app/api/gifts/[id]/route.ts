@@ -7,10 +7,11 @@ import { CreateGiftData } from '@/types/gift'
 // GET - Fetch gift by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const gift = storage.getGiftById(params.id)
+    const { id } = await params
+    const gift = storage.getGiftById(id)
     
     if (!gift) {
       return NextResponse.json({ error: 'Gift not found' }, { status: 404 })
@@ -26,7 +27,7 @@ export async function GET(
 // PUT - Update gift
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Check authentication
@@ -59,7 +60,8 @@ export async function PUT(
       return NextResponse.json({ error: 'At least one occasion is required' }, { status: 400 })
     }
 
-    const updatedGift = storage.updateGift(params.id, data)
+    const { id } = await params
+    const updatedGift = storage.updateGift(id, data)
     
     if (!updatedGift) {
       return NextResponse.json({ error: 'Gift not found' }, { status: 404 })
@@ -75,7 +77,7 @@ export async function PUT(
 // DELETE - Delete gift
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Check authentication
@@ -84,7 +86,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const success = storage.deleteGift(params.id)
+    const { id } = await params
+    const success = storage.deleteGift(id)
     
     if (!success) {
       return NextResponse.json({ error: 'Gift not found' }, { status: 404 })

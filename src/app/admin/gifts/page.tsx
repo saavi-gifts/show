@@ -409,7 +409,7 @@ export default function AdminGifts() {
           
           {gifts.length === 0 ? (
             <div className="p-6 text-center text-gray-500 dark:text-gray-400">
-              No gift items added yet. Click "Add New Gift" to get started.
+              No gift items added yet. Click &quot;Add New Gift&quot; to get started.
             </div>
           ) : (
             <div className="overflow-x-auto">

@@ -31,7 +31,7 @@ export default function Leadership() {
               {/* Quote Overlay */}
               <div className="absolute -bottom-4 -right-4 lg:-bottom-8 lg:-right-8 bg-saavi-gold text-white p-4 lg:p-6 rounded-lg shadow-lg max-w-xs">
                 <blockquote className="text-sm font-medium italic">
-                  "This isn't what I truly want."
+                  &quot;This isn&apos;t what I truly want.&quot;
                 </blockquote>
                 <cite className="text-xs mt-2 block opacity-90">The moment that changed everything</cite>
               </div>
@@ -59,8 +59,8 @@ export default function Leadership() {
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">The Awakening</h3>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                      She began her journey with a Master's in Computer Management from MIT College, now known as MIT-WPU. 
-                      But soon after completing her degree, a quiet realization emerged — <em>This isn't what I truly want.</em> 
+                      She began her journey with a Master&apos;s in Computer Management from MIT College, now known as MIT-WPU. 
+                      But soon after completing her degree, a quiet realization emerged — <em>This isn&apos;t what I truly want.</em> 
                       And thus began a deeply personal journey of self-discovery.
                     </p>
                   </div>
@@ -92,7 +92,7 @@ export default function Leadership() {
                     <div className="w-3 h-3 bg-saavi-gold rounded-full"></div>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">The Heart's Calling</h3>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">The Heart&apos;s Calling</h3>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                       In 2002, she made the conscious decision to pause her career and devote herself fully to raising her 
                       two children. For the next 12 years, she poured her heart into motherhood. Yet, the calling to 
@@ -126,7 +126,7 @@ export default function Leadership() {
                   the individualized learning strategies she believed each child deserved.
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed font-medium">
-                  She knew every child was unique, and their growth couldn't be standardized.
+                  She knew every child was unique, and their growth couldn&apos;t be standardized.
                 </p>
               </div>
             </div>
@@ -176,7 +176,7 @@ export default function Leadership() {
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 italic max-w-xs mx-auto">
-                    "Every child was unique, and their growth couldn't be standardized."
+                    &quot;Every child was unique, and their growth couldn&apos;t be standardized.&quot;
                   </p>
                 </div>
               </div>
@@ -234,7 +234,7 @@ export default function Leadership() {
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 italic max-w-xs mx-auto">
-                    "Empower rural artisans by helping them monetize their work"
+                    &quot;Empower rural artisans by helping them monetize their work&quot;
                   </p>
                 </div>
               </div>
@@ -256,7 +256,7 @@ export default function Leadership() {
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   Her focus was on creating sustainable, earth-friendly artefacts that could be customized to meet each 
-                  customer's sensibility and values.
+                  customer&apos;s sensibility and values.
                 </p>
               </div>
             </div>
@@ -350,7 +350,7 @@ export default function Leadership() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Tradition</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Preserving and celebrating India's rich cultural heritage and traditional craftsmanship
+                Preserving and celebrating India&apos;s rich cultural heritage and traditional craftsmanship
               </p>
             </div>
           </div>

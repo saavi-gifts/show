@@ -59,7 +59,7 @@ export default function Home() {
                     Our curated selection includes handwoven textiles, artisanal pottery, intricate jewelry, 
                     and beautiful home décor pieces—all created using time-honored techniques passed down 
                     through generations. Every purchase directly empowers rural artisans and remote manufacturers, 
-                    helping preserve India's rich cultural heritage.
+                    helping preserve India&apos;s rich cultural heritage.
                   </p>
                 </div>
                 
@@ -81,7 +81,7 @@ export default function Home() {
                     href="/catalog"
                     className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wide text-white bg-saavi-brown rounded-lg hover:bg-saavi-brown-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-saavi-gold transition-all duration-200 transform hover:scale-105"
                   >
-                    <span className="mr-2">Let's Start Curating</span>
+                    <span className="mr-2">Let&apos;s Start Curating</span>
                     <svg 
                       className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200" 
                       fill="none" 
