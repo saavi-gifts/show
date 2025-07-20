@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed 'output: export' to enable API routes for authentication and admin functionality
-  // If you need static export for the main site, consider using ISR or separate build configs
+  // Use static export for GitHub Pages deployment when API routes are removed
+  output: process.env.GITHUB_ACTIONS ? 'export' : undefined,
   trailingSlash: true,
   images: {
     unoptimized: true
