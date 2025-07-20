@@ -1,6 +1,7 @@
 import { Container } from "@/components/Container";
 import { SectionTitle } from "@/components/SectionTitle";
 import { GiftCurator } from "@/components/GiftCurator";
+import { getAssetPath } from "@/lib/utils";
 
 export default function Corporate() {
   return (
@@ -75,7 +76,7 @@ export default function Corporate() {
               <div className="flex items-center justify-between mb-6">
                 <div className="text-center flex-1">
                   <img
-                    src="/img/plastic-bottle.svg"
+                    src={getAssetPath("/img/plastic-bottle.svg")}
                     alt="Plastic bottles"
                     className="w-20 h-20 mx-auto mb-2"
                   />
@@ -89,7 +90,7 @@ export default function Corporate() {
                 
                 <div className="text-center flex-1">
                   <img
-                    src="/img/glass-bottle.svg"
+                    src={getAssetPath("/img/glass-bottle.svg")}
                     alt="Glass bottles"
                     className="w-20 h-20 mx-auto mb-2"
                   />
@@ -128,7 +129,7 @@ export default function Corporate() {
               <div className="flex items-center justify-between mb-6">
                 <div className="text-center flex-1">
                   <img
-                    src="/img/paraffin-candle.svg"
+                    src={getAssetPath("/img/paraffin-candle.svg")}
                     alt="Paraffin candles"
                     className="w-20 h-20 mx-auto mb-2"
                   />
@@ -142,7 +143,7 @@ export default function Corporate() {
                 
                 <div className="text-center flex-1">
                   <img
-                    src="/img/soy-candle.svg"
+                    src={getAssetPath("/img/soy-candle.svg")}
                     alt="Soy candles"
                     className="w-20 h-20 mx-auto mb-2"
                   />
@@ -190,7 +191,7 @@ export default function Corporate() {
             <div className="text-center">
               <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-saavi-gold to-saavi-gold-dark rounded-lg flex items-center justify-center">
                 <img
-                  src="/img/eco-desk-accessories.svg"
+                  src={getAssetPath("/img/eco-desk-accessories.svg")}
                   alt="Eco desk accessories"
                   className="w-12 h-12"
                 />
@@ -204,7 +205,7 @@ export default function Corporate() {
             <div className="text-center">
               <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-saavi-gold to-saavi-gold-dark rounded-lg flex items-center justify-center">
                 <img
-                  src="/img/sustainable-drinkware.svg"
+                  src={getAssetPath("/img/sustainable-drinkware.svg")}
                   alt="Sustainable drinkware"
                   className="w-12 h-12"
                 />
@@ -218,7 +219,7 @@ export default function Corporate() {
             <div className="text-center">
               <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-saavi-gold to-saavi-gold-dark rounded-lg flex items-center justify-center">
                 <img
-                  src="/img/artisan-wellness.svg"
+                  src={getAssetPath("/img/artisan-wellness.svg")}
                   alt="Wellness products"
                   className="w-12 h-12"
                 />
@@ -232,7 +233,7 @@ export default function Corporate() {
             <div className="text-center">
               <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-saavi-gold to-saavi-gold-dark rounded-lg flex items-center justify-center">
                 <img
-                  src="/img/festive-sustainable.svg"
+                  src={getAssetPath("/img/festive-sustainable.svg")}
                   alt="Festive gifts"
                   className="w-12 h-12"
                 />

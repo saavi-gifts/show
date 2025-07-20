@@ -6,6 +6,7 @@ import { Video } from "@/components/Video";
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
+import { getAssetPath } from "@/lib/utils";
 import { GiftShowcase } from "@/components/GiftShowcase";
 import { GiftCurator } from "@/components/GiftCurator";
 
@@ -66,7 +67,7 @@ export default function Home() {
                 {/* Image */}
                 <div className="flex items-center justify-center">
                   <img
-                    src="/img/artisan-crafts.svg"
+                    src={getAssetPath("/img/artisan-crafts.svg")}
                     alt="Traditional handcrafted products and artisan tools"
                     className="w-full max-w-xs h-auto object-contain"
                   />

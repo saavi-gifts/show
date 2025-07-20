@@ -21,11 +21,11 @@ export const metadata: Metadata = {
   description: "Handcrafted eco-friendly products made by skilled women artisans and rural communities. Supporting sustainable livelihoods while preserving traditional Indian craftsmanship.",
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/img/logo.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: '32x32' }
+      { url: `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/favicon.svg`, type: 'image/svg+xml' },
+      { url: `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/img/logo.svg`, type: 'image/svg+xml' },
+      { url: `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/favicon.ico`, sizes: '32x32' }
     ],
-    apple: '/img/logo.svg',
+    apple: `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/img/logo.svg`,
   },
 };
 

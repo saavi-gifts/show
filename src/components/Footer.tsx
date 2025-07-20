@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { Container } from "@/components/Container";
+import { getAssetPath } from "@/lib/utils";
 
 export function Footer() {
   return (
@@ -16,7 +17,7 @@ export function Footer() {
                 className="flex items-center space-x-2 text-2xl font-medium text-saavi-gold dark:text-gray-100"
               >
                 <Image
-                  src="/img/logo1.svg"
+                  src={getAssetPath("/img/logo1.svg")}
                   alt="Saavi"
                   width="32"
                   height="32"

@@ -1,6 +1,7 @@
 import { Container } from "@/components/Container";
 import { SectionTitle } from "@/components/SectionTitle";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/utils";
 
 export default function Leadership() {
   return (
@@ -19,7 +20,7 @@ export default function Leadership() {
             <div className="relative">
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <Image
-                  src="/img/leader.jpeg"
+                  src={getAssetPath("/img/leader.jpeg")}
                   alt="Founder - Learner, Teacher, Mother, Trailblazer"
                   width={400}
                   height={500}
@@ -270,7 +271,7 @@ export default function Leadership() {
           <div className="text-center max-w-4xl mx-auto">
             <div className="mb-8">
               <Image
-                src="/img/logo.svg"
+                src={getAssetPath("/img/logo.svg")}
                 alt="Saavi Logo"
                 width={120}
                 height={40}

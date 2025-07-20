@@ -3,6 +3,7 @@ import Link from "next/link";
 import ThemeChanger from "./DarkSwitch";
 import Image from "next/image"
 import { Disclosure } from "@headlessui/react";
+import { getAssetPath } from "@/lib/utils";
 
 export const Navbar = () => {
   const navigation = [
@@ -19,7 +20,7 @@ export const Navbar = () => {
         {/* Logo  */}
         <Link href="/">
           <Image
-            src="/img/logo1.svg"
+            src={getAssetPath("/img/logo1.svg")}
             width="150"
             alt="Saavi Logo"
             height="150"
