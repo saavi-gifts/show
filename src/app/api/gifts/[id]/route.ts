@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { storage } from '@/lib/storage'
 import { CreateGiftData } from '@/types/gift'
 
+export const dynamic = 'force-dynamic'
+
 // GET - Fetch gift by ID
 export async function GET(
   request: NextRequest,
