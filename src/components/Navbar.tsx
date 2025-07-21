@@ -3,22 +3,22 @@ import Link from "next/link";
 import ThemeChanger from "./DarkSwitch";
 import Image from "next/image"
 import { Disclosure } from "@headlessui/react";
-import { getAssetPath } from "@/lib/utils";
+import { getAssetPath, getPagePath } from "@/lib/utils";
 
 export const Navbar = () => {
   const navigation = [
-    { name: "Products", href: "/" },
-    { name: "Catalog", href: "/catalog" },
-    { name: "Corporate", href: "/corporate" },
-    { name: "Leadership", href: "/leadership" },
-    { name: "Contact", href: "/" },
+    { name: "Products", href: getPagePath("/") },
+    { name: "Catalog", href: getPagePath("/catalog") },
+    { name: "Corporate", href: getPagePath("/corporate") },
+    { name: "Leadership", href: getPagePath("/leadership") },
+    { name: "Contact", href: getPagePath("/") },
   ];
 
   return (
     <div className="w-full">
       <nav className="container relative flex flex-wrap items-center justify-between pt-8 px-8 pb-0 mx-auto lg:justify-between xl:px-1">
         {/* Logo  */}
-        <Link href="/">
+        <Link href={getPagePath("/")}>
           <Image
             src={getAssetPath("/img/logo1.svg")}
             width="150"
@@ -32,7 +32,7 @@ export const Navbar = () => {
         <div className="gap-3 nav__item mr-2 lg:flex ml-auto lg:ml-0 lg:order-2">
             <ThemeChanger />
             <div className="hidden mr-3 lg:flex nav__item">
-              <Link href="/" className="px-6 py-2 text-white bg-saavi-gold hover:bg-saavi-gold-dark rounded-md md:ml-5">
+              <Link href={getPagePath("/")} className="px-6 py-2 text-white bg-saavi-gold hover:bg-saavi-gold-dark rounded-md md:ml-5">
                 Shop Now
               </Link>
             </div>
@@ -71,7 +71,7 @@ export const Navbar = () => {
                           {item.name}
                       </Link>
                     ))}
-                    <Link href="/" className="w-full px-6 py-2 mt-3 text-center text-white bg-saavi-gold hover:bg-saavi-gold-dark rounded-md lg:ml-5">         
+                    <Link href={getPagePath("/")} className="w-full px-6 py-2 mt-3 text-center text-white bg-saavi-gold hover:bg-saavi-gold-dark rounded-md lg:ml-5">         
                         Shop Now
                     </Link>
                   </div>

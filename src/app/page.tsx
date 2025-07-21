@@ -6,7 +6,8 @@ import { Video } from "@/components/Video";
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
-import { getAssetPath } from "@/lib/utils";
+import { getAssetPath, getPagePath } from "@/lib/utils";
+import Link from "next/link";
 import { GiftShowcase } from "@/components/GiftShowcase";
 import { GiftCurator } from "@/components/GiftCurator";
 
@@ -78,8 +79,8 @@ export default function Home() {
             <div className="flex-1 mt-6">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
                 <div className="flex flex-col items-center justify-center text-center">
-                  <a
-                    href="/catalog"
+                  <Link
+                    href={getPagePath("/catalog")}
                     className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wide text-white bg-saavi-brown rounded-lg hover:bg-saavi-brown-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-saavi-gold transition-all duration-200 transform hover:scale-105"
                   >
                     <span className="mr-2">Let&apos;s Start Curating</span>
@@ -91,7 +92,7 @@ export default function Home() {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                  </a>
+                  </Link>
                   <p className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center max-w-md">
                     Browse our curated collection of handcrafted gifts and create personalized gift packages for any occasion
                   </p>

@@ -4,6 +4,7 @@ import { signIn, getSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Container } from "@/components/Container"
+import { getPagePath } from "@/lib/utils"
 
 export default function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false)
@@ -24,7 +25,7 @@ export default function AdminLogin() {
 
     getSession().then((session) => {
       if (session) {
-        router.push("/admin/gifts")
+        router.push(getPagePath("/admin/gifts"))
       }
     }).catch(() => {
       // Session management not available in static export
@@ -37,12 +38,12 @@ export default function AdminLogin() {
     setError("")
     try {
       const result = await signIn("google", {
-        callbackUrl: "/admin/gifts",
+        callbackUrl: getPagePath("/admin/gifts"),
         redirect: false,
       })
       
       if (result?.ok) {
-        router.push("/admin/gifts")
+        router.push(getPagePath("/admin/gifts"))
       } else if (result?.error) {
         setError("Google sign-in failed")
       }
@@ -67,7 +68,7 @@ export default function AdminLogin() {
       })
 
       if (result?.ok) {
-        router.push("/admin/gifts")
+        router.push(getPagePath("/admin/gifts"))
       } else {
         setError("Invalid username or password")
       }

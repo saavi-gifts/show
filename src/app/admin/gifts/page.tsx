@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { Container } from "@/components/Container"
 import { ImageUpload } from "@/components/ImageUpload"
 import { CreateGiftData, Gift } from "@/types/gift"
+import { getPagePath } from "@/lib/utils"
 
 const occasionOptions = [
   "Birthday", "Anniversary", "Wedding", "Diwali", "Holi", "Christmas", 
@@ -35,7 +36,7 @@ export default function AdminGifts() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/admin/login")
+      router.push(getPagePath("/admin/login"))
     }
   }, [status, router])
 
@@ -183,7 +184,7 @@ export default function AdminGifts() {
               {showForm ? "Cancel" : "Add New Gift"}
             </button>
             <button
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => signOut({ callbackUrl: getPagePath("/") })}
               className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
             >
               Sign Out
