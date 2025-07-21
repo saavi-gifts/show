@@ -73,6 +73,10 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Clean output folder
+        run: |
+          rm -rf ./out
+          rm -rf ./.next
       - name: Remove API routes for static export
         run: |
           mkdir -p .api-backup
