@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
     ] : []),
   ],
   pages: {
-    signIn: "/admin/login",
+    signIn: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/admin/login`,
   },
   callbacks: {
     async session({ session, token }) {

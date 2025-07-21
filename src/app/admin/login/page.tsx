@@ -61,16 +61,32 @@ export default function AdminLogin() {
     setError("")
 
     try {
-      const result = await signIn("credentials", {
-        username: credentials.username,
-        password: credentials.password,
-        redirect: false,
-      })
-
-      if (result?.ok) {
-        router.push(getPagePath("/admin/gifts"))
+      // Check if we're in static export mode (GitHub Pages)
+      if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
+        // Simple client-side validation for static deployment
+        const validUsername = process.env.NEXT_PUBLIC_ADMIN_USERNAME || "admin"
+        const validPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123"
+        
+        if (credentials.username === validUsername && credentials.password === validPassword) {
+          // Store a simple flag in localStorage for static deployment
+          localStorage.setItem('saavi_admin_authenticated', 'true')
+          router.push(getPagePath("/admin/gifts"))
+        } else {
+          setError("Invalid username or password")
+        }
       } else {
-        setError("Invalid username or password")
+        // Use NextAuth for development/server environments
+        const result = await signIn("credentials", {
+          username: credentials.username,
+          password: credentials.password,
+          redirect: false,
+        })
+
+        if (result?.ok) {
+          router.push(getPagePath("/admin/gifts"))
+        } else {
+          setError("Invalid username or password")
+        }
       }
     } catch (error) {
       console.error("Sign in error:", error)

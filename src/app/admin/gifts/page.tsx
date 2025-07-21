@@ -35,8 +35,18 @@ export default function AdminGifts() {
   })
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push(getPagePath("/admin/login"))
+    // Check authentication based on environment
+    if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
+      // For static deployment, check localStorage
+      const isAuthenticated = localStorage.getItem('saavi_admin_authenticated')
+      if (!isAuthenticated) {
+        router.push(getPagePath("/admin/login"))
+      }
+    } else {
+      // For server environments, use NextAuth session
+      if (status === "unauthenticated") {
+        router.push(getPagePath("/admin/login"))
+      }
     }
   }, [status, router])
 
@@ -184,7 +194,16 @@ export default function AdminGifts() {
               {showForm ? "Cancel" : "Add New Gift"}
             </button>
             <button
-              onClick={() => signOut({ callbackUrl: getPagePath("/") })}
+              onClick={() => {
+                if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
+                  // For static deployment, clear localStorage and redirect
+                  localStorage.removeItem('saavi_admin_authenticated')
+                  router.push(getPagePath("/"))
+                } else {
+                  // Use NextAuth signOut for server environments
+                  signOut({ callbackUrl: getPagePath("/") })
+                }
+              }}
               className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
             >
               Sign Out
