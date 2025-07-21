@@ -63,7 +63,7 @@ export default function AdminGifts() {
       }
     } catch (error) {
       console.error('Error fetching gifts (API not available in static export):', error)
-      // In static export, show placeholder message
+      // In static export, API routes don't exist, so we show empty state with helpful message
       setGifts([])
     }
   }
@@ -169,7 +169,13 @@ export default function AdminGifts() {
     )
   }
 
-  if (!session) {
+  // Check authentication based on environment
+  const isStaticMode = process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')
+  const isAuthenticated = isStaticMode ? 
+    (typeof window !== 'undefined' && localStorage.getItem('saavi_admin_authenticated')) : 
+    session
+
+  if (!isAuthenticated) {
     return null
   }
 
@@ -183,7 +189,7 @@ export default function AdminGifts() {
               Gift Items Management
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Welcome, {session.user?.name}
+              Welcome, {isStaticMode ? "Admin" : session.user?.name}
             </p>
           </div>
           <div className="flex gap-4">
