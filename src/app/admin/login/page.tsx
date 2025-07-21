@@ -1,7 +1,5 @@
 "use client"
 
-export const dynamic = 'force-dynamic'
-
 import { signIn, getSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -15,16 +13,22 @@ export default function AdminLogin() {
   const router = useRouter()
 
   useEffect(() => {
-    // Get auth type from server
+    // Get auth type from server - fallback to credentials if API not available
     fetch("/api/auth/config")
       .then(res => res.json())
       .then(data => setAuthType(data.authType))
-      .catch(() => setAuthType("credentials"))
+      .catch(() => {
+        // In static export, API routes aren't available, default to credentials
+        setAuthType("credentials")
+      })
 
     getSession().then((session) => {
       if (session) {
         router.push("/admin/gifts")
       }
+    }).catch(() => {
+      // Session management not available in static export
+      console.log("Session management not available in static export")
     })
   }, [router])
 

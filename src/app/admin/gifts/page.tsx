@@ -1,7 +1,5 @@
 "use client"
 
-export const dynamic = 'force-dynamic'
-
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -53,7 +51,9 @@ export default function AdminGifts() {
         setGifts(data)
       }
     } catch (error) {
-      console.error('Error fetching gifts:', error)
+      console.error('Error fetching gifts (API not available in static export):', error)
+      // In static export, show placeholder message
+      setGifts([])
     }
   }
 
@@ -411,7 +411,13 @@ export default function AdminGifts() {
           
           {gifts.length === 0 ? (
             <div className="p-6 text-center text-gray-500 dark:text-gray-400">
-              No gift items added yet. Click &quot;Add New Gift&quot; to get started.
+              <div className="mb-2">No gift items found.</div>
+              <div className="text-sm">
+                {process.env.NEXT_PUBLIC_BASE_PATH ? 
+                  "Note: Admin functionality is limited in static export mode. Deploy with server environment for full functionality." 
+                  : "Click \"Add New Gift\" to get started."
+                }
+              </div>
             </div>
           ) : (
             <div className="overflow-x-auto">
