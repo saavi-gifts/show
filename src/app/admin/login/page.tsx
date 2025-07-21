@@ -4,7 +4,7 @@ import { signIn, getSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Container } from "@/components/Container"
-import { getPagePath } from "@/lib/utils"
+import { getPagePath, getApiPath } from "@/lib/utils"
 
 export default function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false)
@@ -15,7 +15,7 @@ export default function AdminLogin() {
 
   useEffect(() => {
     // Get auth type from server - fallback to credentials if API not available
-    fetch("/api/auth/config")
+    fetch(getApiPath("/api/auth/config"))
       .then(res => res.json())
       .then(data => setAuthType(data.authType))
       .catch(() => {

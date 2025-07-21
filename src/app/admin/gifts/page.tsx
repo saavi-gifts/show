@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { Container } from "@/components/Container"
 import { ImageUpload } from "@/components/ImageUpload"
 import { CreateGiftData, Gift } from "@/types/gift"
-import { getPagePath } from "@/lib/utils"
+import { getPagePath, getApiPath } from "@/lib/utils"
 
 const occasionOptions = [
   "Birthday", "Anniversary", "Wedding", "Diwali", "Holi", "Christmas", 
@@ -46,7 +46,7 @@ export default function AdminGifts() {
 
   const fetchGifts = async () => {
     try {
-      const response = await fetch('/api/gifts')
+      const response = await fetch(getApiPath('/api/gifts'))
       if (response.ok) {
         const data = await response.json()
         setGifts(data)
@@ -63,7 +63,7 @@ export default function AdminGifts() {
     try {
       if (editingGift) {
         // Update existing gift
-        const response = await fetch(`/api/gifts/${editingGift.id}`, {
+        const response = await fetch(getApiPath(`/api/gifts/${editingGift.id}`), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export default function AdminGifts() {
         setGifts(prev => prev.map(gift => gift.id === editingGift.id ? updatedGift : gift))
       } else {
         // Create new gift
-        const response = await fetch('/api/gifts', {
+        const response = await fetch(getApiPath('/api/gifts'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ export default function AdminGifts() {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this gift item?")) {
       try {
-        const response = await fetch(`/api/gifts/${id}`, {
+        const response = await fetch(getApiPath(`/api/gifts/${id}`), {
           method: 'DELETE',
         })
 

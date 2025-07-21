@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { getApiPath } from "@/lib/utils"
 
 interface ImageUploadProps {
   value?: string
@@ -44,7 +45,7 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
       const formData = new FormData()
       formData.append('file', file)
 
-      const response = await fetch('/api/upload', {
+      const response = await fetch(getApiPath('/api/upload'), {
         method: 'POST',
         body: formData,
       })

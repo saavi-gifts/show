@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Container } from "@/components/Container";
 import { Gift } from "@/types/gift";
+import { getApiPath, getAssetPath } from "@/lib/utils";
 
 export const CatalogGrid = () => {
   const [gifts, setGifts] = useState<Gift[]>([])
@@ -14,7 +15,7 @@ export const CatalogGrid = () => {
 
   const fetchGifts = async () => {
     try {
-      const response = await fetch('/api/gifts')
+      const response = await fetch(getApiPath('/api/gifts'))
       if (response.ok) {
         const data = await response.json()
         // Filter only active gifts
@@ -34,7 +35,7 @@ export const CatalogGrid = () => {
   }
 
   const getImageUrl = (gift: Gift) => {
-    return gift.imageUrl || '/img/placeholder-sustainable.svg'
+    return gift.imageUrl || getAssetPath('/img/placeholder-sustainable.svg')
   }
 
   const formatPrice = (gift: Gift) => {
