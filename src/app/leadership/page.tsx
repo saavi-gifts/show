@@ -1,7 +1,7 @@
 import { Container } from "@/components/Container";
 import { SectionTitle } from "@/components/SectionTitle";
 import Image from "next/image";
-import { getAssetPath, getPagePath } from "@/lib/utils";
+import { getAssetPath } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Leadership() {
@@ -296,7 +296,7 @@ export default function Leadership() {
             {/* Call to Action */}
             <div className="mt-12">
               <Link
-                href={getPagePath("/catalog")}
+                href="/catalog"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-saavi-gold hover:bg-saavi-gold-dark rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg"
               >
                 Explore Our Story Through Our Products

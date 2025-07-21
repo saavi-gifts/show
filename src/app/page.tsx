@@ -6,7 +6,7 @@ import { Video } from "@/components/Video";
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
-import { getAssetPath, getPagePath } from "@/lib/utils";
+import { getAssetPath } from "@/lib/utils";
 import Link from "next/link";
 import { GiftShowcase } from "@/components/GiftShowcase";
 import { GiftCurator } from "@/components/GiftCurator";
@@ -80,7 +80,7 @@ export default function Home() {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
                 <div className="flex flex-col items-center justify-center text-center">
                   <Link
-                    href={getPagePath("/catalog")}
+                    href="/catalog"
                     className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wide text-white bg-saavi-brown rounded-lg hover:bg-saavi-brown-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-saavi-gold transition-all duration-200 transform hover:scale-105"
                   >
                     <span className="mr-2">Let&apos;s Start Curating</span>

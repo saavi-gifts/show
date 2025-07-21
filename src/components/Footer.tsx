@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { Container } from "@/components/Container";
-import { getAssetPath, getPagePath } from "@/lib/utils";
+import { getAssetPath } from "@/lib/utils";
 
 export function Footer() {
   return (
@@ -13,7 +13,7 @@ export function Footer() {
             <div>
               {" "}
               <Link
-                href={getPagePath("/")}
+                href="/"
                 className="flex items-center space-x-2 text-2xl font-medium text-saavi-gold dark:text-gray-100"
               >
                 <Image
