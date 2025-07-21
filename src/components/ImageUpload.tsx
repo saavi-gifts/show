@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { getApiPath } from "@/lib/utils"
+import Image from "next/image"
 
 interface ImageUploadProps {
   value?: string
@@ -103,9 +104,10 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
       {previewUrl && (
         <div className="relative">
           <div className="relative w-full h-48 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
-            <img
+            <Image
               src={previewUrl}
               alt="Upload preview"
+              fill
               className="w-full h-full object-cover"
             />
             <button

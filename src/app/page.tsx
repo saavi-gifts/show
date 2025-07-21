@@ -8,6 +8,7 @@ import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
 import { getAssetPath } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import { GiftShowcase } from "@/components/GiftShowcase";
 import { GiftCurator } from "@/components/GiftCurator";
 
@@ -67,9 +68,11 @@ export default function Home() {
                 
                 {/* Image */}
                 <div className="flex items-center justify-center">
-                  <img
+                  <Image
                     src={getAssetPath("/img/artisan-crafts.svg")}
                     alt="Traditional handcrafted products and artisan tools"
+                    width={320}
+                    height={240}
                     className="w-full max-w-xs h-auto object-contain"
                   />
                 </div>

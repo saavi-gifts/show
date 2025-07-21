@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Container } from "@/components/Container";
 import { Gift } from "@/types/gift";
 import { getApiPath, getAssetPath } from "@/lib/utils";
+import Image from "next/image";
 
 export const CatalogGrid = () => {
   const [gifts, setGifts] = useState<Gift[]>([])
@@ -81,9 +82,11 @@ export const CatalogGrid = () => {
           >
             {/* Gift Image */}
             <div className="relative">
-              <img
+              <Image
                 src={getImageUrl(gift)}
                 alt={gift.name}
+                width={400}
+                height={256}
                 className="w-full h-64 object-cover"
               />
               <span className="absolute top-3 right-3 bg-saavi-gold text-white px-2 py-1 rounded-full text-xs font-medium">
@@ -179,9 +182,11 @@ export const CatalogGrid = () => {
                 </button>
               </div>
               
-              <img
+              <Image
                 src={getImageUrl(selectedGift)}
                 alt={selectedGift.name}
+                width={600}
+                height={256}
                 className="w-full h-64 object-cover rounded-lg mb-4"
               />
               

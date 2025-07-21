@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import Image from "next/image"
 import { Container } from "@/components/Container"
 import { ImageUpload } from "@/components/ImageUpload"
 import { CreateGiftData, Gift } from "@/types/gift"
@@ -189,7 +190,7 @@ export default function AdminGifts() {
               Gift Items Management
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Welcome, {isStaticMode ? "Admin" : session.user?.name}
+              Welcome, {isStaticMode ? "Admin" : (session?.user?.name || "User")}
             </p>
           </div>
           <div className="flex gap-4">
@@ -473,9 +474,11 @@ export default function AdminGifts() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           {gift.imageUrl && (
-                            <img 
+                            <Image 
                               src={gift.imageUrl} 
                               alt={gift.name}
+                              width={40}
+                              height={40}
                               className="h-10 w-10 rounded object-cover mr-3"
                             />
                           )}
