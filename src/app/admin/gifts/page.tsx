@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { Container } from "@/components/Container"
 import { ImageUpload } from "@/components/ImageUpload"
 import { CreateGiftData, Gift } from "@/types/gift"
-import { getPagePath, getApiPath } from "@/lib/utils"
+import { getApiPath } from "@/lib/utils"
 
 const occasionOptions = [
   "Birthday", "Anniversary", "Wedding", "Diwali", "Holi", "Christmas", 
@@ -40,12 +40,12 @@ export default function AdminGifts() {
       // For static deployment, check localStorage
       const isAuthenticated = localStorage.getItem('saavi_admin_authenticated')
       if (!isAuthenticated) {
-        router.push(getPagePath("/admin/login"))
+        router.push("/admin/login")
       }
     } else {
       // For server environments, use NextAuth session
       if (status === "unauthenticated") {
-        router.push(getPagePath("/admin/login"))
+        router.push("/admin/login")
       }
     }
   }, [status, router])
@@ -198,10 +198,10 @@ export default function AdminGifts() {
                 if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
                   // For static deployment, clear localStorage and redirect
                   localStorage.removeItem('saavi_admin_authenticated')
-                  router.push(getPagePath("/"))
+                  router.push("/")
                 } else {
                   // Use NextAuth signOut for server environments
-                  signOut({ callbackUrl: getPagePath("/") })
+                  signOut({ callbackUrl: "/" })
                 }
               }}
               className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
