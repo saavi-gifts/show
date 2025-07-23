@@ -60,7 +60,7 @@ DATABASE_PASSWORD=your-password
 ## Storage Selection Logic
 
 1. If `USE_DB=true` → PlanetScale Database
-2. If on Vercel or `KV_URL` exists → Vercel KV  
+2. If on Vercel or `KV_REST_API_URL` exists → Vercel KV  
 3. Otherwise → File System
 
 ## Data Persistence

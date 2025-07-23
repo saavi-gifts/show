@@ -6,7 +6,7 @@ import { dbStorage } from './storage-db'
 
 // Determine storage type based on environment variables
 const useDatabase = process.env.USE_DB === 'true'
-const useKV = !useDatabase && (process.env.VERCEL || process.env.KV_URL)
+const useKV = !useDatabase && (process.env.VERCEL || process.env.KV_REST_API_URL)
 
 console.log(`Storage mode: ${useDatabase ? 'Database' : useKV ? 'KV' : 'File System'}`)
 
