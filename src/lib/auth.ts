@@ -20,9 +20,12 @@ export const authOptions: NextAuthOptions = {
           password: { label: "Password", type: "password" }
         },
         async authorize(credentials) {
+          const adminUsername = process.env.ADMIN_USERNAME || process.env.NEXT_PUBLIC_ADMIN_USERNAME || "admin"
+          const adminPassword = process.env.ADMIN_PASSWORD || process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123"
+          
           if (
-            credentials?.username === process.env.ADMIN_USERNAME &&
-            credentials?.password === process.env.ADMIN_PASSWORD
+            credentials?.username === adminUsername &&
+            credentials?.password === adminPassword
           ) {
             return {
               id: "1",
@@ -46,7 +49,7 @@ export const authOptions: NextAuthOptions = {
       return token
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "your-secret-key-for-development-only",
 }
 
 export { authType }

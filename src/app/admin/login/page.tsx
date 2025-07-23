@@ -62,7 +62,7 @@ export default function AdminLogin() {
 
     try {
       // Check if we're in static export mode (GitHub Pages)
-      if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
+      if (process.env.GITHUB_ACTIONS) {
         // Simple client-side validation for static deployment
         const validUsername = process.env.NEXT_PUBLIC_ADMIN_USERNAME || "admin"
         const validPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123"
