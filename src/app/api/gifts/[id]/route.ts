@@ -11,7 +11,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const gift = storage.getGiftById(id)
+    const gift = await storage.getGiftById(id)
     
     if (!gift) {
       return NextResponse.json({ error: 'Gift not found' }, { status: 404 })
@@ -61,7 +61,7 @@ export async function PUT(
     }
 
     const { id } = await params
-    const updatedGift = storage.updateGift(id, data)
+    const updatedGift = await storage.updateGift(id, data)
     
     if (!updatedGift) {
       return NextResponse.json({ error: 'Gift not found' }, { status: 404 })
@@ -87,7 +87,7 @@ export async function DELETE(
     }
 
     const { id } = await params
-    const success = storage.deleteGift(id)
+    const success = await storage.deleteGift(id)
     
     if (!success) {
       return NextResponse.json({ error: 'Gift not found' }, { status: 404 })

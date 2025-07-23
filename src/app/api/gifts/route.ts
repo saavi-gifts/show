@@ -7,7 +7,7 @@ import { CreateGiftData } from '@/types/gift'
 // GET - Fetch all gifts
 export async function GET() {
   try {
-    const gifts = storage.getGifts()
+    const gifts = await storage.getGifts()
     return NextResponse.json(gifts)
   } catch (error) {
     console.error('Error fetching gifts:', error)
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'At least one occasion is required' }, { status: 400 })
     }
 
-    const newGift = storage.addGift(data)
+    const newGift = await storage.addGift(data)
     return NextResponse.json(newGift, { status: 201 })
   } catch (error) {
     console.error('Error creating gift:', error)

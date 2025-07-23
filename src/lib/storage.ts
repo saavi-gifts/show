@@ -1,23 +1,32 @@
 import fs from 'fs'
 import path from 'path'
 import { Gift } from '@/types/gift'
+import { kvStorage } from './storage-kv'
+import { dbStorage } from './storage-db'
 
+// Determine storage type based on environment variables
+const useDatabase = process.env.USE_DB === 'true'
+const useKV = !useDatabase && (process.env.VERCEL || process.env.KV_URL)
+
+console.log(`Storage mode: ${useDatabase ? 'Database' : useKV ? 'KV' : 'File System'}`)
+
+// File system storage (fallback for local development)
 const DATA_DIR = path.join(process.cwd(), 'data')
 const GIFTS_FILE = path.join(DATA_DIR, 'gifts.json')
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
+// Ensure data directory exists (only for local development)
+if (!useKV && !useDatabase && !fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true })
 }
 
-// Initialize gifts file if it doesn't exist
-if (!fs.existsSync(GIFTS_FILE)) {
+// Initialize gifts file if it doesn't exist (only for local development)
+if (!useKV && !useDatabase && !fs.existsSync(GIFTS_FILE)) {
   fs.writeFileSync(GIFTS_FILE, JSON.stringify([], null, 2))
 }
 
-export const storage = {
-  // Read all gifts
-  getGifts: (): Gift[] => {
+// File system storage implementation (async for consistency)
+const fileStorage = {
+  getGifts: async (): Promise<Gift[]> => {
     try {
       const data = fs.readFileSync(GIFTS_FILE, 'utf-8')
       return JSON.parse(data)
@@ -27,8 +36,7 @@ export const storage = {
     }
   },
 
-  // Save gifts to file
-  saveGifts: (gifts: Gift[]): void => {
+  saveGifts: async (gifts: Gift[]): Promise<void> => {
     try {
       fs.writeFileSync(GIFTS_FILE, JSON.stringify(gifts, null, 2))
     } catch (error) {
@@ -37,15 +45,13 @@ export const storage = {
     }
   },
 
-  // Get gift by ID
-  getGiftById: (id: string): Gift | null => {
-    const gifts = storage.getGifts()
+  getGiftById: async (id: string): Promise<Gift | null> => {
+    const gifts = await fileStorage.getGifts()
     return gifts.find(gift => gift.id === id) || null
   },
 
-  // Add new gift
-  addGift: (giftData: Omit<Gift, 'id' | 'createdAt' | 'updatedAt'>): Gift => {
-    const gifts = storage.getGifts()
+  addGift: async (giftData: Omit<Gift, 'id' | 'createdAt' | 'updatedAt'>): Promise<Gift> => {
+    const gifts = await fileStorage.getGifts()
     const newGift: Gift = {
       ...giftData,
       id: Date.now().toString(),
@@ -53,13 +59,12 @@ export const storage = {
       updatedAt: new Date()
     }
     gifts.push(newGift)
-    storage.saveGifts(gifts)
+    await fileStorage.saveGifts(gifts)
     return newGift
   },
 
-  // Update existing gift
-  updateGift: (id: string, giftData: Partial<Omit<Gift, 'id' | 'createdAt'>>): Gift | null => {
-    const gifts = storage.getGifts()
+  updateGift: async (id: string, giftData: Partial<Omit<Gift, 'id' | 'createdAt'>>): Promise<Gift | null> => {
+    const gifts = await fileStorage.getGifts()
     const index = gifts.findIndex(gift => gift.id === id)
     
     if (index === -1) {
@@ -72,13 +77,12 @@ export const storage = {
       updatedAt: new Date()
     }
     
-    storage.saveGifts(gifts)
+    await fileStorage.saveGifts(gifts)
     return gifts[index]
   },
 
-  // Delete gift
-  deleteGift: (id: string): boolean => {
-    const gifts = storage.getGifts()
+  deleteGift: async (id: string): Promise<boolean> => {
+    const gifts = await fileStorage.getGifts()
     const index = gifts.findIndex(gift => gift.id === id)
     
     if (index === -1) {
@@ -86,7 +90,10 @@ export const storage = {
     }
 
     gifts.splice(index, 1)
-    storage.saveGifts(gifts)
+    await fileStorage.saveGifts(gifts)
     return true
   }
 }
+
+// Export the appropriate storage implementation
+export const storage = useDatabase ? dbStorage : useKV ? kvStorage : fileStorage
