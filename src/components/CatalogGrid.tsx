@@ -226,7 +226,7 @@ export const CatalogGrid = () => {
                       </span>
                     ))}
                   </div>
-                  {selectedGift.tags && selectedGift.tags.length > 0 && (
+                  {selectedGift.tags && Array.isArray(selectedGift.tags) && selectedGift.tags.length > 0 && (
                     <div className="mt-2">
                       <h5 className="font-medium text-gray-700 dark:text-gray-300 text-sm">Tags:</h5>
                       <div className="flex flex-wrap gap-1 mt-1">
