@@ -18,21 +18,14 @@ export const dbStorage = {
       return rows.map(row => ({
         id: row.id as string,
         name: row.name as string,
-        description: row.description as string || '',
+        description: row.description as string || undefined,
         category: row.category as string,
-        subcategory: row.subcategory as string || '',
         priceRangeMin: row.price_range_min as number || undefined,
         priceRangeMax: row.price_range_max as number || undefined,
         dimensions: row.dimensions ? JSON.parse(row.dimensions as string) : undefined,
-        materials: row.materials ? JSON.parse(row.materials as string) : [],
-        colors: row.colors ? JSON.parse(row.colors as string) : [],
         occasions: row.occasions ? JSON.parse(row.occasions as string) : [],
         tags: row.tags ? JSON.parse(row.tags as string) : [],
-        images: row.images ? JSON.parse(row.images as string) : [],
-        artisanInfo: row.artisan_info ? JSON.parse(row.artisan_info as string) : undefined,
-        customizationOptions: row.customization_options ? JSON.parse(row.customization_options as string) : [],
-        sustainabilityInfo: row.sustainability_info ? JSON.parse(row.sustainability_info as string) : undefined,
-        careInstructions: row.care_instructions as string || '',
+        imageUrl: row.image_url as string || undefined,
         isActive: row.is_active as boolean,
         createdAt: new Date(row.created_at as string),
         updatedAt: new Date(row.updated_at as string)
@@ -53,21 +46,14 @@ export const dbStorage = {
       return {
         id: row.id as string,
         name: row.name as string,
-        description: row.description as string || '',
+        description: row.description as string || undefined,
         category: row.category as string,
-        subcategory: row.subcategory as string || '',
         priceRangeMin: row.price_range_min as number || undefined,
         priceRangeMax: row.price_range_max as number || undefined,
         dimensions: row.dimensions ? JSON.parse(row.dimensions as string) : undefined,
-        materials: row.materials ? JSON.parse(row.materials as string) : [],
-        colors: row.colors ? JSON.parse(row.colors as string) : [],
         occasions: row.occasions ? JSON.parse(row.occasions as string) : [],
         tags: row.tags ? JSON.parse(row.tags as string) : [],
-        images: row.images ? JSON.parse(row.images as string) : [],
-        artisanInfo: row.artisan_info ? JSON.parse(row.artisan_info as string) : undefined,
-        customizationOptions: row.customization_options ? JSON.parse(row.customization_options as string) : [],
-        sustainabilityInfo: row.sustainability_info ? JSON.parse(row.sustainability_info as string) : undefined,
-        careInstructions: row.care_instructions as string || '',
+        imageUrl: row.image_url as string || undefined,
         isActive: row.is_active as boolean,
         createdAt: new Date(row.created_at as string),
         updatedAt: new Date(row.updated_at as string)
@@ -86,29 +72,21 @@ export const dbStorage = {
     try {
       await conn.execute(`
         INSERT INTO gifts (
-          id, name, description, category, subcategory, price_range_min, price_range_max,
-          dimensions, materials, colors, occasions, tags, images, artisan_info,
-          customization_options, sustainability_info, care_instructions, is_active,
+          id, name, description, category, price_range_min, price_range_max,
+          dimensions, occasions, tags, image_url, is_active,
           created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, [
         id,
         giftData.name,
-        giftData.description || '',
+        giftData.description || null,
         giftData.category,
-        giftData.subcategory || '',
         giftData.priceRangeMin || null,
         giftData.priceRangeMax || null,
         giftData.dimensions ? JSON.stringify(giftData.dimensions) : null,
-        JSON.stringify(giftData.materials || []),
-        JSON.stringify(giftData.colors || []),
         JSON.stringify(giftData.occasions || []),
         JSON.stringify(giftData.tags || []),
-        JSON.stringify(giftData.images || []),
-        giftData.artisanInfo ? JSON.stringify(giftData.artisanInfo) : null,
-        JSON.stringify(giftData.customizationOptions || []),
-        giftData.sustainabilityInfo ? JSON.stringify(giftData.sustainabilityInfo) : null,
-        giftData.careInstructions || '',
+        giftData.imageUrl || null,
         giftData.isActive !== false,
         now.toISOString(),
         now.toISOString()
@@ -137,19 +115,12 @@ export const dbStorage = {
       if (giftData.name !== undefined) { fields.push('name = ?'); values.push(giftData.name) }
       if (giftData.description !== undefined) { fields.push('description = ?'); values.push(giftData.description) }
       if (giftData.category !== undefined) { fields.push('category = ?'); values.push(giftData.category) }
-      if (giftData.subcategory !== undefined) { fields.push('subcategory = ?'); values.push(giftData.subcategory) }
       if (giftData.priceRangeMin !== undefined) { fields.push('price_range_min = ?'); values.push(giftData.priceRangeMin) }
       if (giftData.priceRangeMax !== undefined) { fields.push('price_range_max = ?'); values.push(giftData.priceRangeMax) }
       if (giftData.dimensions !== undefined) { fields.push('dimensions = ?'); values.push(giftData.dimensions ? JSON.stringify(giftData.dimensions) : null) }
-      if (giftData.materials !== undefined) { fields.push('materials = ?'); values.push(JSON.stringify(giftData.materials)) }
-      if (giftData.colors !== undefined) { fields.push('colors = ?'); values.push(JSON.stringify(giftData.colors)) }
       if (giftData.occasions !== undefined) { fields.push('occasions = ?'); values.push(JSON.stringify(giftData.occasions)) }
       if (giftData.tags !== undefined) { fields.push('tags = ?'); values.push(JSON.stringify(giftData.tags)) }
-      if (giftData.images !== undefined) { fields.push('images = ?'); values.push(JSON.stringify(giftData.images)) }
-      if (giftData.artisanInfo !== undefined) { fields.push('artisan_info = ?'); values.push(giftData.artisanInfo ? JSON.stringify(giftData.artisanInfo) : null) }
-      if (giftData.customizationOptions !== undefined) { fields.push('customization_options = ?'); values.push(JSON.stringify(giftData.customizationOptions)) }
-      if (giftData.sustainabilityInfo !== undefined) { fields.push('sustainability_info = ?'); values.push(giftData.sustainabilityInfo ? JSON.stringify(giftData.sustainabilityInfo) : null) }
-      if (giftData.careInstructions !== undefined) { fields.push('care_instructions = ?'); values.push(giftData.careInstructions) }
+      if (giftData.imageUrl !== undefined) { fields.push('image_url = ?'); values.push(giftData.imageUrl) }
       if (giftData.isActive !== undefined) { fields.push('is_active = ?'); values.push(giftData.isActive) }
       
       fields.push('updated_at = ?')
