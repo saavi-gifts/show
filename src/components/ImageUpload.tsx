@@ -14,12 +14,10 @@ interface ImageUploadProps {
 export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string>(value || '')
+  const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-
+  const uploadFile = async (file: File) => {
     // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('Please select an image file')
@@ -68,6 +66,32 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
     }
   }
 
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    await uploadFile(file)
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    setIsDragOver(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    setIsDragOver(false)
+  }
+
+  const handleDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    setIsDragOver(false)
+    
+    const files = e.dataTransfer.files
+    if (files.length > 0) {
+      await uploadFile(files[0])
+    }
+  }
+
   const handleRemove = () => {
     setPreviewUrl('')
     onRemove()
@@ -79,7 +103,16 @@ export function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-center w-full">
-        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+        <label 
+          className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+            isDragOver 
+              ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20' 
+              : 'border-gray-300 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 dark:border-gray-600 dark:hover:border-gray-500'
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <PhotoIcon className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">

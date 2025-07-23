@@ -28,13 +28,16 @@ export async function POST(request: NextRequest) {
     // Generate unique filename
     const ext = path.extname(file.name)
     const filename = `${uuidv4()}${ext}`
-    const filepath = path.join(process.cwd(), 'public', 'uploads', filename)
+    
+    // Use /tmp directory for Vercel serverless functions
+    const filepath = path.join('/tmp', filename)
 
-    // Save file
+    // Save file to /tmp
     await writeFile(filepath, buffer)
 
-    // Return the URL path
-    const imageUrl = `/uploads/${filename}`
+    // Return the file data as base64 for display (since we can't serve from /tmp)
+    const base64 = buffer.toString('base64')
+    const imageUrl = `data:${file.type};base64,${base64}`
 
     return NextResponse.json({ imageUrl }, { status: 200 })
   } catch (error) {
