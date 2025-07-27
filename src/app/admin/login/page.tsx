@@ -21,6 +21,11 @@ export default function AdminLogin() {
     document.title = "Loading Auth..."
     console.log("AdminLogin useEffect triggered")
     
+    // Check for callbackUrl in URL params
+    const urlParams = new URLSearchParams(window.location.search)
+    const callbackUrl = urlParams.get('callbackUrl')
+    console.log("Callback URL found:", callbackUrl)
+    
     // Get auth type from server - fallback to credentials if API not available
     fetch(getApiPath("/api/auth/config"))
       .then(res => {
@@ -48,9 +53,11 @@ export default function AdminLogin() {
         console.log("Current session:", session)
         if (session) {
           document.title = "Redirecting..."
-          console.log("Session exists, redirecting to /admin/gifts")
-          // Use replace instead of push to avoid back button issues
-          router.replace("/admin/gifts")
+          console.log("Session exists, redirecting")
+          // Use the callback URL if available, otherwise default to /admin/gifts
+          const redirectUrl = callbackUrl ? decodeURIComponent(callbackUrl) : "/admin/gifts"
+          console.log("Redirecting to:", redirectUrl)
+          router.replace(redirectUrl)
         } else {
           document.title = "Admin Login"
         }
@@ -118,7 +125,12 @@ export default function AdminLogin() {
         console.log("NextAuth result:", result)
         if (result?.ok) {
           console.log("NextAuth successful, redirecting")
-          router.push("/admin/gifts")
+          // Check for callback URL in current page
+          const urlParams = new URLSearchParams(window.location.search)
+          const callbackUrl = urlParams.get('callbackUrl')
+          const redirectUrl = callbackUrl ? decodeURIComponent(callbackUrl) : "/admin/gifts"
+          console.log("Redirecting to:", redirectUrl)
+          router.replace(redirectUrl)
         } else {
           console.log("NextAuth failed:", result?.error)
           setError("Invalid username or password")
