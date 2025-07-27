@@ -56,6 +56,12 @@ export const authOptions: NextAuthOptions = {
     },
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Always redirect to the callback URL or default to /admin/gifts
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      if (new URL(url).origin === baseUrl) return url
+      return `${baseUrl}/admin/gifts`
+    },
     async session({ session, token }) {
       return session
     },

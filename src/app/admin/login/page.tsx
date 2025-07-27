@@ -115,24 +115,22 @@ export default function AdminLogin() {
         }
       } else {
         console.log("Using NextAuth credentials")
-        // Use NextAuth for development/server environments
+        // Use NextAuth for development/server environments with built-in redirect
+        const urlParams = new URLSearchParams(window.location.search)
+        const callbackUrl = urlParams.get('callbackUrl') || "/admin/gifts"
+        
+        console.log("Attempting NextAuth signIn with callbackUrl:", callbackUrl)
         const result = await signIn("credentials", {
           username: credentials.username,
           password: credentials.password,
-          redirect: false,
+          callbackUrl: callbackUrl,
+          redirect: true, // Let NextAuth handle the redirect
         })
 
         console.log("NextAuth result:", result)
-        if (result?.ok) {
-          console.log("NextAuth successful, redirecting")
-          // Check for callback URL in current page
-          const urlParams = new URLSearchParams(window.location.search)
-          const callbackUrl = urlParams.get('callbackUrl')
-          const redirectUrl = callbackUrl ? decodeURIComponent(callbackUrl) : "/admin/gifts"
-          console.log("Redirecting to:", redirectUrl)
-          router.replace(redirectUrl)
-        } else {
-          console.log("NextAuth failed:", result?.error)
+        // If we reach here and result is not ok, show error
+        if (result && !result.ok) {
+          console.log("NextAuth failed:", result.error)
           setError("Invalid username or password")
         }
       }
