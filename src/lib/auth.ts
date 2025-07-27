@@ -39,7 +39,21 @@ export const authOptions: NextAuthOptions = {
     ] : []),
   ],
   pages: {
-    signIn: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/admin/login`,
+    signIn: "/admin/login",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  cookies: {
+    sessionToken: {
+      name: "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
   },
   callbacks: {
     async session({ session, token }) {

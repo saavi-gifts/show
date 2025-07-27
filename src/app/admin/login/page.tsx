@@ -11,27 +11,56 @@ export default function AdminLogin() {
   const [authType, setAuthType] = useState<string>("")
   const [credentials, setCredentials] = useState({ username: "", password: "" })
   const [error, setError] = useState("")
+  const [sessionChecked, setSessionChecked] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
+    // Prevent multiple session checks that could cause loops
+    if (sessionChecked) return
+    
+    document.title = "Loading Auth..."
+    console.log("AdminLogin useEffect triggered")
+    
     // Get auth type from server - fallback to credentials if API not available
     fetch(getApiPath("/api/auth/config"))
-      .then(res => res.json())
-      .then(data => setAuthType(data.authType))
-      .catch(() => {
+      .then(res => {
+        console.log("Auth config response:", res.status)
+        return res.json()
+      })
+      .then(data => {
+        console.log("Auth config data:", data)
+        setAuthType(data.authType)
+        document.title = `Auth: ${data.authType}`
+      })
+      .catch((error) => {
+        console.log("Auth config fetch error:", error)
         // In static export, API routes aren't available, default to credentials
         setAuthType("credentials")
+        document.title = "Auth: credentials (fallback)"
       })
 
-    getSession().then((session) => {
-      if (session) {
-        router.push("/admin/gifts")
-      }
-    }).catch(() => {
-      // Session management not available in static export
-      console.log("Session management not available in static export")
-    })
-  }, [router])
+    // Only check session once to prevent loops
+    if (!sessionChecked) {
+      setSessionChecked(true)
+      document.title = "Checking session..."
+      
+      getSession().then((session) => {
+        console.log("Current session:", session)
+        if (session) {
+          document.title = "Redirecting..."
+          console.log("Session exists, redirecting to /admin/gifts")
+          // Use replace instead of push to avoid back button issues
+          router.replace("/admin/gifts")
+        } else {
+          document.title = "Admin Login"
+        }
+      }).catch((error) => {
+        // Session management not available in static export
+        console.log("Session check error:", error)
+        document.title = "Admin Login (no session)"
+      })
+    }
+  }, [])
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
@@ -57,12 +86,14 @@ export default function AdminLogin() {
 
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("Credentials sign-in initiated")
     setIsLoading(true)
     setError("")
 
     try {
       // Check if we're in static export mode (GitHub Pages)
       if (process.env.GITHUB_ACTIONS) {
+        console.log("Using static export auth")
         // Simple client-side validation for static deployment
         const validUsername = process.env.NEXT_PUBLIC_ADMIN_USERNAME || "admin"
         const validPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123"
@@ -70,11 +101,13 @@ export default function AdminLogin() {
         if (credentials.username === validUsername && credentials.password === validPassword) {
           // Store a simple flag in localStorage for static deployment
           localStorage.setItem('saavi_admin_authenticated', 'true')
+          console.log("Static auth successful, redirecting")
           router.push("/admin/gifts")
         } else {
           setError("Invalid username or password")
         }
       } else {
+        console.log("Using NextAuth credentials")
         // Use NextAuth for development/server environments
         const result = await signIn("credentials", {
           username: credentials.username,
@@ -82,9 +115,12 @@ export default function AdminLogin() {
           redirect: false,
         })
 
+        console.log("NextAuth result:", result)
         if (result?.ok) {
+          console.log("NextAuth successful, redirecting")
           router.push("/admin/gifts")
         } else {
+          console.log("NextAuth failed:", result?.error)
           setError("Invalid username or password")
         }
       }
