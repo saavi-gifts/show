@@ -36,20 +36,28 @@ export default function AdminGifts() {
   })
 
   useEffect(() => {
+    console.log("AdminGifts auth check - Status:", status, "Session:", !!session)
+    
+    // Prevent redirecting if session is loading or exists
+    if (status === "loading") return
+    if (session) return // If we have a session, we're authenticated
+    
     // Check authentication based on environment
     if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
       // For static deployment, check localStorage
       const isAuthenticated = localStorage.getItem('saavi_admin_authenticated')
       if (!isAuthenticated) {
+        console.log("No static auth, redirecting to login")
         router.push("/admin/login")
       }
     } else {
       // For server environments, use NextAuth session
       if (status === "unauthenticated") {
+        console.log("NextAuth unauthenticated, redirecting to login")
         router.push("/admin/login")
       }
     }
-  }, [status, router])
+  }, [session, status, router])
 
   useEffect(() => {
     fetchGifts()
