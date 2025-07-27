@@ -6,7 +6,7 @@ const nextConfig = {
   basePath: process.env.GITHUB_ACTIONS ? '/show' : '',
   // Set assetPrefix for proper asset loading
   assetPrefix: process.env.GITHUB_ACTIONS ? '/show' : '',
-  trailingSlash: true,
+  trailingSlash: false,
   images: {
     unoptimized: true
   },
