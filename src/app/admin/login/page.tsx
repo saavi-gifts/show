@@ -67,7 +67,7 @@ export default function AdminLogin() {
         document.title = "Admin Login (no session)"
       })
     }
-  }, [])
+  }, [router, sessionChecked])
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
