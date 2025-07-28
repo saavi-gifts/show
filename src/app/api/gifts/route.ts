@@ -1,17 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { storage } from '@/lib/storage'
 import { CreateGiftData } from '@/types/gift'
+import fs from 'fs'
+import path from 'path'
 
 // GET - Fetch all gifts
 export async function GET() {
   try {
-    const gifts = await storage.getGifts()
+    const GIFTS_FILE = path.join(process.cwd(), 'data', 'gifts.json')
+    
+    if (!fs.existsSync(GIFTS_FILE)) {
+      return NextResponse.json([])
+    }
+    
+    const data = fs.readFileSync(GIFTS_FILE, 'utf-8')
+    const rawGifts = JSON.parse(data)
+    
+    // Normalize data types
+    const gifts = rawGifts.map((gift: any) => ({
+      ...gift,
+      priceRangeMin: gift.priceRangeMin ? parseFloat(gift.priceRangeMin) : undefined,
+      priceRangeMax: gift.priceRangeMax ? parseFloat(gift.priceRangeMax) : undefined,
+      dimensions: gift.dimensions ? {
+        ...gift.dimensions,
+        length: gift.dimensions.length ? parseFloat(gift.dimensions.length) : 0,
+        width: gift.dimensions.width ? parseFloat(gift.dimensions.width) : 0,
+        height: gift.dimensions.height ? parseFloat(gift.dimensions.height) : 0,
+      } : undefined,
+      tags: Array.isArray(gift.tags) ? gift.tags : (typeof gift.tags === 'string' ? [gift.tags] : []),
+      occasions: Array.isArray(gift.occasions) ? gift.occasions : [],
+      createdAt: new Date(gift.createdAt),
+      updatedAt: new Date(gift.updatedAt)
+    }))
+    
     return NextResponse.json(gifts)
   } catch (error) {
     console.error('Error fetching gifts:', error)
-    return NextResponse.json({ error: 'Failed to fetch gifts' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to fetch gifts', details: String(error) }, { status: 500 })
   }
 }
 

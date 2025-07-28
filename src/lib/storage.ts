@@ -3,12 +3,14 @@ import path from 'path'
 import { Gift } from '@/types/gift'
 import { kvStorage } from './storage-kv'
 import { dbStorage } from './storage-db'
+import { supabaseStorage } from './supabase'
 
 // Determine storage type based on environment variables
-const useDatabase = process.env.USE_DB === 'true'
-const useKV = !useDatabase && (process.env.VERCEL || process.env.KV_REST_API_URL || process.env.REDIS_URL)
+const useSupabase = process.env.USE_SUPABASE === 'true'
+const useDatabase = !useSupabase && process.env.USE_DB === 'true'
+const useKV = !useSupabase && !useDatabase && (process.env.VERCEL || process.env.KV_REST_API_URL || process.env.REDIS_URL)
 
-console.log(`Storage mode: ${useDatabase ? 'Database' : useKV ? 'KV' : 'File System'}`)
+console.log(`Storage mode: ${useSupabase ? 'Supabase' : useDatabase ? 'Database' : useKV ? 'KV' : 'File System'}`)
 
 // File system storage (fallback for local development)
 const DATA_DIR = path.join(process.cwd(), 'data')
@@ -29,7 +31,24 @@ const fileStorage = {
   getGifts: async (): Promise<Gift[]> => {
     try {
       const data = fs.readFileSync(GIFTS_FILE, 'utf-8')
-      return JSON.parse(data)
+      const rawGifts = JSON.parse(data)
+      
+      // Normalize data types
+      return rawGifts.map((gift: any) => ({
+        ...gift,
+        priceRangeMin: gift.priceRangeMin ? parseFloat(gift.priceRangeMin) : undefined,
+        priceRangeMax: gift.priceRangeMax ? parseFloat(gift.priceRangeMax) : undefined,
+        dimensions: gift.dimensions ? {
+          ...gift.dimensions,
+          length: gift.dimensions.length ? parseFloat(gift.dimensions.length) : 0,
+          width: gift.dimensions.width ? parseFloat(gift.dimensions.width) : 0,
+          height: gift.dimensions.height ? parseFloat(gift.dimensions.height) : 0,
+        } : undefined,
+        tags: Array.isArray(gift.tags) ? gift.tags : (typeof gift.tags === 'string' ? [gift.tags] : []),
+        occasions: Array.isArray(gift.occasions) ? gift.occasions : [],
+        createdAt: new Date(gift.createdAt),
+        updatedAt: new Date(gift.updatedAt)
+      }))
     } catch (error) {
       console.error('Error reading gifts file:', error)
       return []
@@ -96,4 +115,4 @@ const fileStorage = {
 }
 
 // Export the appropriate storage implementation
-export const storage = useDatabase ? dbStorage : useKV ? kvStorage : fileStorage
+export const storage = useSupabase ? supabaseStorage : useDatabase ? dbStorage : useKV ? kvStorage : fileStorage
