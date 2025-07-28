@@ -28,6 +28,7 @@ export default function AdminGifts() {
   const [isLoading, setIsLoading] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [editingGift, setEditingGift] = useState<Gift | null>(null)
+  const [authChecked, setAuthChecked] = useState(false)
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CreateGiftData>({
     defaultValues: {
@@ -38,25 +39,46 @@ export default function AdminGifts() {
   useEffect(() => {
     console.log("AdminGifts auth check - Status:", status, "Session:", !!session)
     
-    // Prevent redirecting if session is loading or exists
-    if (status === "loading") return
-    if (session) return // If we have a session, we're authenticated
+    // Add timeout for loading state
+    const timeout = setTimeout(() => {
+      if (status === "loading") {
+        console.log("Auth loading timeout, proceeding with fallback auth check")
+        setAuthChecked(true)
+      }
+    }, 3000)
     
-    // Check authentication based on environment
-    if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
-      // For static deployment, check localStorage
-      const isAuthenticated = localStorage.getItem('saavi_admin_authenticated')
-      if (!isAuthenticated) {
-        console.log("No static auth, redirecting to login")
-        router.push("/admin/login")
-      }
-    } else {
-      // For server environments, use NextAuth session
-      if (status === "unauthenticated") {
-        console.log("NextAuth unauthenticated, redirecting to login")
-        router.push("/admin/login")
-      }
+    // If we have a session, we're authenticated
+    if (session) {
+      setAuthChecked(true)
+      clearTimeout(timeout)
+      return
     }
+    
+    // If not loading, check authentication
+    if (status !== "loading") {
+      // Check authentication based on environment
+      if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
+        // For static deployment, check localStorage
+        const isAuthenticated = localStorage.getItem('saavi_admin_authenticated')
+        if (!isAuthenticated) {
+          console.log("No static auth, redirecting to login")
+          router.push("/admin/login")
+        } else {
+          setAuthChecked(true)
+        }
+      } else {
+        // For server environments, use NextAuth session
+        if (status === "unauthenticated") {
+          console.log("NextAuth unauthenticated, redirecting to login")
+          router.push("/admin/login")
+        } else {
+          setAuthChecked(true)
+        }
+      }
+      clearTimeout(timeout)
+    }
+    
+    return () => clearTimeout(timeout)
   }, [session, status, router])
 
   useEffect(() => {
@@ -168,7 +190,7 @@ export default function AdminGifts() {
     setEditingGift(null)
   }
 
-  if (status === "loading") {
+  if (status === "loading" && !authChecked) {
     return (
       <Container>
         <div className="min-h-screen flex items-center justify-center">
@@ -184,7 +206,17 @@ export default function AdminGifts() {
     (typeof window !== 'undefined' && localStorage.getItem('saavi_admin_authenticated')) : 
     session
 
-  if (!isAuthenticated) {
+  if (!authChecked || !isAuthenticated) {
+    if (authChecked && !isAuthenticated) {
+      // Auth check completed but not authenticated, redirect should have happened
+      return (
+        <Container>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-lg">Redirecting to login...</div>
+          </div>
+        </Container>
+      )
+    }
     return null
   }
 
