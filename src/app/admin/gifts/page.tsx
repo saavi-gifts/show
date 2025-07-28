@@ -41,14 +41,15 @@ export default function AdminGifts() {
     
     // Add timeout for loading state
     const timeout = setTimeout(() => {
-      if (status === "loading") {
+      if (status === "loading" && !authChecked) {
         console.log("Auth loading timeout, proceeding with fallback auth check")
         setAuthChecked(true)
       }
     }, 3000)
     
     // If we have a session, we're authenticated
-    if (session) {
+    if (session && status === "authenticated") {
+      console.log("Session authenticated, setting authChecked to true")
       setAuthChecked(true)
       clearTimeout(timeout)
       return
@@ -56,6 +57,7 @@ export default function AdminGifts() {
     
     // If not loading, check authentication
     if (status !== "loading") {
+      console.log("Status not loading, checking auth based on environment")
       // Check authentication based on environment
       if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')) {
         // For static deployment, check localStorage
@@ -63,6 +65,7 @@ export default function AdminGifts() {
         if (!isAuthenticated) {
           console.log("No static auth, redirecting to login")
           router.push("/admin/login")
+          return
         } else {
           setAuthChecked(true)
         }
@@ -71,7 +74,9 @@ export default function AdminGifts() {
         if (status === "unauthenticated") {
           console.log("NextAuth unauthenticated, redirecting to login")
           router.push("/admin/login")
-        } else {
+          return
+        } else if (status === "authenticated") {
+          console.log("NextAuth authenticated, setting authChecked")
           setAuthChecked(true)
         }
       }
@@ -79,7 +84,7 @@ export default function AdminGifts() {
     }
     
     return () => clearTimeout(timeout)
-  }, [session, status, router])
+  }, [session, status, router, authChecked])
 
   useEffect(() => {
     fetchGifts()
@@ -204,20 +209,28 @@ export default function AdminGifts() {
   const isStaticMode = process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_URL?.includes('localhost')
   const isAuthenticated = isStaticMode ? 
     (typeof window !== 'undefined' && localStorage.getItem('saavi_admin_authenticated')) : 
-    session
+    !!session
 
-  if (!authChecked || !isAuthenticated) {
-    if (authChecked && !isAuthenticated) {
-      // Auth check completed but not authenticated, redirect should have happened
-      return (
-        <Container>
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-lg">Redirecting to login...</div>
-          </div>
-        </Container>
-      )
-    }
-    return null
+  console.log("Auth check:", { authChecked, isAuthenticated, session: !!session, status, isStaticMode })
+
+  if (!authChecked) {
+    return (
+      <Container>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-lg">Loading...</div>
+        </div>
+      </Container>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Container>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-lg">Redirecting to login...</div>
+        </div>
+      </Container>
+    )
   }
 
   return (
